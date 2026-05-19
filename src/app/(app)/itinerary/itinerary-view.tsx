@@ -133,6 +133,10 @@ export function ItineraryView({
         <p className="text-ink-muted text-pretty max-w-2xl">
           Drop activities onto days as the group converges. Multiple per day is fine — we'll figure out the order later.
         </p>
+        <p className="text-xs text-ink-soft flex items-center gap-1.5">
+          <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-warm" aria-hidden />
+          Dashed cards / amber dots mark days that aren't locked in yet.
+        </p>
       </header>
 
       <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
@@ -148,7 +152,13 @@ export function ItineraryView({
             );
 
           return (
-            <article key={d.date} className="bg-paper border border-edge rounded-lg p-4 shadow-card flex flex-col">
+            <article
+              key={d.date}
+              className={cn(
+                "bg-paper border rounded-lg p-4 shadow-card flex flex-col",
+                d.confirmed ? "border-edge" : "border-dashed border-edge-soft bg-paper/60",
+              )}
+            >
               <header className="flex items-baseline justify-between gap-2 pb-2 border-b border-edge">
                 <div>
                   <div className="font-serif text-lg font-semibold">{d.shortLabel}</div>
@@ -163,7 +173,16 @@ export function ItineraryView({
                 </Badge>
               </header>
               {d.lodgingDetail && (
-                <p className="text-[11px] text-ink-soft mt-1">{d.lodgingDetail}</p>
+                <p className="text-[11px] text-ink-soft mt-1 flex items-center gap-1">
+                  {!d.confirmed && (
+                    <span
+                      className="inline-block h-1.5 w-1.5 rounded-full bg-amber-warm"
+                      title="Tentative — not yet confirmed"
+                      aria-label="Tentative"
+                    />
+                  )}
+                  {d.lodgingDetail}
+                </p>
               )}
 
               <ul className="space-y-1.5 flex-1 my-3 min-h-[24px]">

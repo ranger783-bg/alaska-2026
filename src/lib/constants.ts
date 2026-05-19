@@ -9,6 +9,7 @@ export interface TripDay {
   shortLabel: string;
   lodging: "Anchorage" | "Homer" | "Cooper Landing" | "Travel";
   lodgingDetail: string;
+  confirmed: boolean;
 }
 
 const ONE_DAY = 24 * 60 * 60 * 1000;
@@ -24,31 +25,37 @@ function isoDay(d: Date) {
   return `${y}-${m}-${day}`;
 }
 
-function lodgingFor(d: Date): { lodging: TripDay["lodging"]; detail: string } {
+// Confirmed: arrival (Jun 17), Wild River Cottage in Homer (Jun 22-26), departure (Jul 2).
+// Everything else is our best guess — Anchorage with Laura & Eric, then Cooper Landing pending.
+function lodgingFor(d: Date): { lodging: TripDay["lodging"]; detail: string; confirmed: boolean } {
   const day = d.getDate();
   const m = d.getMonth(); // 0-indexed: 5 = June, 6 = July
-  if (m === 5 && day >= 17 && day <= 21) return { lodging: "Anchorage", detail: "With Laura & Eric" };
-  if (m === 5 && day === 22) return { lodging: "Anchorage", detail: "Travel day → Homer" };
-  if (m === 5 && day >= 23 && day <= 25) return { lodging: "Homer", detail: "Wild Rose Cottage" };
-  if (m === 5 && day === 26) return { lodging: "Homer", detail: "Travel day → Cooper Landing" };
-  if (m === 5 && day >= 27 && day <= 29) return { lodging: "Cooper Landing", detail: "Russian River House" };
-  if (m === 5 && day === 30) return { lodging: "Cooper Landing", detail: "Travel day → Anchorage" };
-  if (m === 6 && day === 1) return { lodging: "Anchorage", detail: "With Laura & Eric" };
-  if (m === 6 && day === 2) return { lodging: "Anchorage", detail: "Fly home" };
-  return { lodging: "Travel", detail: "" };
+  if (m === 5 && day === 17) return { lodging: "Anchorage", detail: "Land at ANC", confirmed: true };
+  if (m === 5 && day >= 18 && day <= 19) return { lodging: "Anchorage", detail: "With Laura & Eric (tentative)", confirmed: false };
+  if (m === 5 && day === 20) return { lodging: "Anchorage", detail: "Solstice weekend", confirmed: false };
+  if (m === 5 && day === 21) return { lodging: "Anchorage", detail: "Solstice Sunday", confirmed: false };
+  if (m === 5 && day === 22) return { lodging: "Homer", detail: "Wild River Cottage (check-in)", confirmed: true };
+  if (m === 5 && day >= 23 && day <= 25) return { lodging: "Homer", detail: "Wild River Cottage", confirmed: true };
+  if (m === 5 && day === 26) return { lodging: "Homer", detail: "Wild River Cottage (check-out)", confirmed: true };
+  if (m === 5 && day >= 27 && day <= 29) return { lodging: "Cooper Landing", detail: "Russian River House (pending)", confirmed: false };
+  if (m === 5 && day === 30) return { lodging: "Cooper Landing", detail: "Travel day → Anchorage (tentative)", confirmed: false };
+  if (m === 6 && day === 1) return { lodging: "Anchorage", detail: "With Laura & Eric (tentative)", confirmed: false };
+  if (m === 6 && day === 2) return { lodging: "Anchorage", detail: "Fly home", confirmed: true };
+  return { lodging: "Travel", detail: "", confirmed: false };
 }
 
 export function tripDays(): TripDay[] {
   const days: TripDay[] = [];
   for (let t = TRIP_START.getTime(); t <= TRIP_END.getTime(); t += ONE_DAY) {
     const d = new Date(t);
-    const { lodging, detail } = lodgingFor(d);
+    const { lodging, detail, confirmed } = lodgingFor(d);
     days.push({
       date: isoDay(d),
       weekday: d.toLocaleDateString("en-US", { weekday: "long" }),
       shortLabel: dayLabel(d),
       lodging,
       lodgingDetail: detail,
+      confirmed,
     });
   }
   return days;
