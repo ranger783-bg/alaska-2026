@@ -34,7 +34,7 @@ export default async function LoginPage({
             Welcome to the planning board
           </h1>
           <p className="mt-3 text-ink-muted text-pretty">
-            June 17 – July 2. Sign in with the email Brian or Laura used to invite you.
+            June 17 – July 2. Sign in with the email you were invited at.
           </p>
         </div>
 
