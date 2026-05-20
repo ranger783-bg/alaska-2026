@@ -26,7 +26,7 @@ from (values
    'https://upload.wikimedia.org/wikipedia/commons/4/43/Flattop-Anchorage.jpg',
    'https://en.wikipedia.org/wiki/Flattop_Mountain_(Alaska)'),
   ('Earthquake Park',
-   'https://upload.wikimedia.org/wikipedia/commons/3/3e/Earthquake_Park_Anchorage.jpg',
+   'https://upload.wikimedia.org/wikipedia/commons/5/55/Earthquake_Park_Trail%2C_Anchorage%2C_Alaska%2C_Summer_01.jpg',
    'https://en.wikipedia.org/wiki/1964_Alaska_earthquake'),
   ('Potter Marsh boardwalk',
    'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Potter_Marsh_facing_the_inlet.jpg/3840px-Potter_Marsh_facing_the_inlet.jpg',
