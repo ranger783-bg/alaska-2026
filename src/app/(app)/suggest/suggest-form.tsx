@@ -44,6 +44,8 @@ export function SuggestForm({ activeProfileId, activeProfileName }: SuggestFormP
   const [kidFriendly, setKidFriendly] = useState(true);
   const [indoor, setIndoor] = useState(false);
   const [externalLink, setExternalLink] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+  const [mapQuery, setMapQuery] = useState("");
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -69,6 +71,8 @@ export function SuggestForm({ activeProfileId, activeProfileName }: SuggestFormP
         kid_friendly: kidFriendly,
         indoor_option: indoor,
         external_link: externalLink.trim() || null,
+        photo_url: photoUrl.trim() || null,
+        map_query: mapQuery.trim() || null,
         status: "pending",
         submitted_by: activeProfileId,
       })
@@ -174,6 +178,14 @@ export function SuggestForm({ activeProfileId, activeProfileName }: SuggestFormP
 
       <Field label="Link" hint="Optional — official site, blog post, anything for context.">
         <Input type="url" value={externalLink} onChange={(e) => setExternalLink(e.target.value)} placeholder="https://" />
+      </Field>
+
+      <Field label="Photo URL" hint="Optional — paste an image link (right-click an image → Copy image address). Wikimedia Commons works well. Leave blank for a placeholder.">
+        <Input type="url" value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} placeholder="https://…/photo.jpg" />
+      </Field>
+
+      <Field label="Where is it? (for the map)" hint="Optional — a place name or address so the map centers correctly, e.g. 'Exit Glacier, Seward, AK'. If blank, we'll guess from the title and location.">
+        <Input value={mapQuery} onChange={(e) => setMapQuery(e.target.value)} placeholder="Place name or address" maxLength={160} />
       </Field>
 
       <div className="flex justify-end gap-2 pt-2 border-t border-edge">

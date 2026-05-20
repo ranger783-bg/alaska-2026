@@ -137,7 +137,12 @@ export const MAP_QUERIES: Record<string, string> = {
   "Hidden Lake / Skilak Lake Loop": "Skilak Lake, Sterling, AK",
 };
 
-export function mapQueryForActivity(a: { title: string; location: LocationKey }): string {
+export function mapQueryForActivity(a: {
+  title: string;
+  location: LocationKey;
+  map_query?: string | null;
+}): string {
+  if (a.map_query && a.map_query.trim()) return a.map_query.trim();
   if (MAP_QUERIES[a.title]) return MAP_QUERIES[a.title];
   const cleanTitle = a.title.replace(/\s*\(.*?\)\s*/g, " ").trim();
   const place = LOCATIONS[a.location] ?? "Alaska";

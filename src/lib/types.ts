@@ -55,6 +55,7 @@ export interface ActivityRow {
   kid_friendly: boolean;
   indoor_option: boolean;
   external_link: string | null;
+  map_query: string | null;
   status: ActivityStatus;
   submitted_by: string | null;
   created_at: string;
