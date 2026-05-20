@@ -34,7 +34,7 @@ insert into activities (
   'Anchorage Summer Solstice Festival', 'anchorage',
   array['culture','town'],
   'Free street festival downtown celebrating the longest day of the year. Live music, food trucks, vendors, and the rare chance to be outside at midnight in full sunlight.',
-  'Falls on Sunday, June 21, 2026. Crowds peak mid-afternoon — go earlier with the kids and shorter for the dog.',
+  'Falls on Sunday, June 21, 2026. Crowds peak mid-afternoon — easier earlier with the kids, and a packed street festival is a lot for any dog.',
   0, 0, 4, 'easy', 'no', true, false, 'https://www.anchoragedowntown.org/events', 'approved'
 ),
 (
@@ -60,7 +60,7 @@ insert into activities (
   'Flattop Mountain hike', 'anchorage',
   array['hike','outdoors','scenic'],
   'Most-climbed mountain in Alaska. ~1.5 miles each way with a steep, scrambly final push. Panoramic views of the Chugach Range, Cook Inlet, and on a clear day Denali.',
-  'Skip this with the dog — too steep for a recovering amputee. Could split: two adults summit while the dog stays at the trailhead picnic area.',
+  'Steep, scrambly footing up top — not really a dog hike. Could split: two adults summit while someone stays with the dog at the trailhead picnic area.',
   5, 5, 3, 'moderate', 'maybe', true, false, null, 'approved'
 ),
 (
@@ -153,7 +153,7 @@ insert into activities (
   'Russian River sockeye fishing', 'cooper_landing',
   array['fishing','water','outdoors'],
   'Peak sockeye run is typically late June into early July — perfect timing. Combat fishing crowds on the bank, or hire a guide for a calmer experience. The ''Russian River flip'' is its own technique to learn.',
-  'Heavy bear traffic on the banks during the run. Not a place to bring a recovering dog or younger kids. Adults-only.',
+  'Heavy bear traffic on the banks during the run. Not a place to bring a dog or younger kids. Adults-only.',
   25, 250, 6, 'moderate', 'no', false, false, null, 'approved'
 ),
 (
@@ -167,7 +167,7 @@ insert into activities (
   'Russian River Falls hike', 'cooper_landing',
   array['hike','wildlife','scenic'],
   '~5 miles round-trip on a mostly-boardwalk trail to a viewing platform over the falls. During the run, hundreds of sockeye visibly leap up. Easy footing, gradual climb.',
-  'Active bear country during the salmon run. Make noise, travel in a group, carry spray. Leash the dog and keep her close.',
+  'Active bear country during the salmon run. Make noise, travel in a group, carry spray. Keep the dog leashed and close.',
   5, 5, 3, 'easy', 'yes', true, false, null, 'approved'
 ),
 (
