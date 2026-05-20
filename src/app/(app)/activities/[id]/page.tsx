@@ -7,10 +7,11 @@ import { PlaceholderImage } from "@/components/placeholder-image";
 import { VoteSection } from "./vote-section";
 import { CommentThread } from "@/components/comment-thread";
 import { ItineraryButton } from "./itinerary-button";
+import { MapEmbed } from "@/components/map-embed";
 import { createClient } from "@/lib/supabase/server";
 import { requireSession } from "@/lib/auth";
 import { formatCostRange, formatDurationHours } from "@/lib/utils";
-import { CATEGORIES, DOG_FRIENDLY_LABEL, INTENSITY_LABEL, LOCATIONS } from "@/lib/constants";
+import { CATEGORIES, DOG_FRIENDLY_LABEL, INTENSITY_LABEL, LOCATIONS, mapQueryForActivity } from "@/lib/constants";
 import type { ActivityRow, CommentRow, ItineraryItemRow, UserRow, VoteRow } from "@/lib/types";
 
 interface PageProps {
@@ -101,6 +102,8 @@ export default async function ActivityDetailPage({ params }: PageProps) {
             </a>
           </Button>
         )}
+
+        <MapEmbed query={mapQueryForActivity(a)} title={a.title} />
 
         <VoteSection
           activityId={a.id}

@@ -103,3 +103,43 @@ export const HOUSEHOLDS = {
   co: { label: "Longmont, CO", color: "#0E5E63" },
   ak: { label: "Anchorage, AK", color: "#5A7C5A" },
 } as const;
+
+// Curated, geocodable Google Maps queries for each seed activity so the
+// embedded map centers on the right place. New/suggested activities fall
+// back to a derived query (see mapQueryForActivity).
+export const MAP_QUERIES: Record<string, string> = {
+  "Anchorage Summer Solstice Festival": "Downtown Anchorage, Alaska",
+  "Tony Knowles Coastal Trail": "Tony Knowles Coastal Trail, Anchorage, AK",
+  "Anchorage Museum": "Anchorage Museum, Anchorage, AK",
+  "Alaska Native Heritage Center": "Alaska Native Heritage Center, Anchorage, AK",
+  "Flattop Mountain hike": "Flattop Mountain, Anchorage, AK",
+  "Earthquake Park": "Earthquake Park, Anchorage, AK",
+  "Potter Marsh boardwalk": "Potter Marsh, Anchorage, AK",
+  "Halibut charter (Homer Harbor)": "Homer Harbor, Homer, AK",
+  "Kachemak Bay via water taxi": "Kachemak Bay, Alaska",
+  "Bishop's Beach": "Bishop's Beach, Homer, AK",
+  "Homer Spit": "Homer Spit, Homer, AK",
+  "Pratt Museum": "Pratt Museum, Homer, AK",
+  "Bunnell Street Arts Center & Old Town galleries": "Bunnell Street Arts Center, Homer, AK",
+  "Homer Brewing / Grace Ridge Brewing": "Homer Brewing Company, Homer, AK",
+  "Seldovia day trip via ferry": "Seldovia, Alaska",
+  "Lake Clark bear viewing flight": "Lake Clark National Park and Preserve, Alaska",
+  "Center for Alaskan Coastal Studies tidepool tour": "Center for Alaskan Coastal Studies, Homer, AK",
+  "Bald eagle viewing on the Spit": "Homer Spit, Homer, AK",
+  "Russian River sockeye fishing": "Russian River Campground, Cooper Landing, AK",
+  "Kenai River drift trip with guide": "Kenai River, Cooper Landing, AK",
+  "Russian River Falls hike": "Russian River Falls, Cooper Landing, AK",
+  "Resurrection Pass Trail": "Resurrection Pass Trail, Cooper Landing, AK",
+  "Crescent Creek / Crescent Lake trail": "Crescent Creek Trailhead, Cooper Landing, AK",
+  "Kenai Lake": "Kenai Lake, Cooper Landing, AK",
+  "Cooper Landing Museum": "Cooper Landing Historical Society Museum, Cooper Landing, AK",
+  "Alaska Horsemen Trail Adventures": "Alaska Horsemen Trail Adventures, Cooper Landing, AK",
+  "Hidden Lake / Skilak Lake Loop": "Skilak Lake, Sterling, AK",
+};
+
+export function mapQueryForActivity(a: { title: string; location: LocationKey }): string {
+  if (MAP_QUERIES[a.title]) return MAP_QUERIES[a.title];
+  const cleanTitle = a.title.replace(/\s*\(.*?\)\s*/g, " ").trim();
+  const place = LOCATIONS[a.location] ?? "Alaska";
+  return `${cleanTitle}, ${place}, Alaska`;
+}
