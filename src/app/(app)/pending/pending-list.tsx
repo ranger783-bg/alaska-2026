@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, Trash2, Loader2 } from "lucide-react";
+import { Check, Trash2, Loader2, ImagePlus } from "lucide-react";
 import { toast } from "sonner";
 import { Avatar } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { PhotoPicker } from "@/components/photo-picker";
 import { CATEGORIES, LOCATIONS } from "@/lib/constants";
 import { createClient } from "@/lib/supabase/client";
 import type { ActivityRow, UserRow } from "@/lib/types";
@@ -19,15 +20,16 @@ interface PendingListProps {
 export function PendingList({ activities, profiles }: PendingListProps) {
   const router = useRouter();
   const [pendingId, setPendingId] = useState<string | null>(null);
+  const [savingPhoto, setSavingPhoto] = useState<string | null>(null);
+  const [photos, setPhotos] = useState<Record<string, string>>(
+    () => Object.fromEntries(activities.map((a) => [a.id, a.photo_url ?? ""])),
+  );
   const profilesById = new Map(profiles.map((p) => [p.id, p]));
 
   async function promote(id: string) {
     setPendingId(id);
     const supabase = createClient();
-    const { error } = await supabase
-      .from("activities")
-      .update({ status: "approved" })
-      .eq("id", id);
+    const { error } = await supabase.from("activities").update({ status: "approved" }).eq("id", id);
     setPendingId(null);
     if (error) {
       toast.error(error.message);
@@ -40,10 +42,7 @@ export function PendingList({ activities, profiles }: PendingListProps) {
   async function archive(id: string) {
     setPendingId(id);
     const supabase = createClient();
-    const { error } = await supabase
-      .from("activities")
-      .update({ status: "archived" })
-      .eq("id", id);
+    const { error } = await supabase.from("activities").update({ status: "archived" }).eq("id", id);
     setPendingId(null);
     if (error) {
       toast.error(error.message);
@@ -52,11 +51,28 @@ export function PendingList({ activities, profiles }: PendingListProps) {
     router.refresh();
   }
 
+  async function savePhoto(id: string) {
+    setSavingPhoto(id);
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("activities")
+      .update({ photo_url: photos[id]?.trim() || null })
+      .eq("id", id);
+    setSavingPhoto(null);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    toast.success("Photo saved.");
+    router.refresh();
+  }
+
   return (
     <ul className="space-y-3">
       {activities.map((a) => {
         const author = a.submitted_by ? profilesById.get(a.submitted_by) : null;
         const busy = pendingId === a.id;
+        const photoDirty = (photos[a.id] ?? "") !== (a.photo_url ?? "");
         return (
           <li key={a.id} className="bg-paper border border-edge rounded-lg p-4 shadow-card">
             <div className="flex items-start gap-3">
@@ -75,7 +91,26 @@ export function PendingList({ activities, profiles }: PendingListProps) {
                   </p>
                 )}
                 <p className="text-sm text-ink-muted text-pretty line-clamp-3">{a.description}</p>
-                <div className="flex gap-2 pt-1">
+
+                <div className="pt-1 space-y-2">
+                  <div className="flex items-center gap-1.5 text-xs text-ink-muted">
+                    <ImagePlus className="h-3.5 w-3.5" />
+                    {a.photo_url ? "Photo (edit or replace)" : "Add a photo (optional)"}
+                  </div>
+                  <PhotoPicker
+                    value={photos[a.id] ?? ""}
+                    onChange={(url) => setPhotos((p) => ({ ...p, [a.id]: url }))}
+                    compact
+                  />
+                  {photoDirty && (
+                    <Button size="sm" variant="outline" onClick={() => savePhoto(a.id)} disabled={savingPhoto === a.id}>
+                      {savingPhoto === a.id ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
+                      Save photo
+                    </Button>
+                  )}
+                </div>
+
+                <div className="flex gap-2 pt-2 border-t border-edge">
                   <Button size="sm" onClick={() => promote(a.id)} disabled={busy}>
                     {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Check className="h-4 w-4" />}
                     Add to board

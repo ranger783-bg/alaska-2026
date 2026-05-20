@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { CATEGORIES, LOCATIONS } from "@/lib/constants";
+import { PhotoPicker } from "@/components/photo-picker";
 import { createClient } from "@/lib/supabase/client";
 import type { Category, DogFriendly, Intensity, LocationKey } from "@/lib/types";
 
@@ -180,8 +181,8 @@ export function SuggestForm({ activeProfileId, activeProfileName }: SuggestFormP
         <Input type="url" value={externalLink} onChange={(e) => setExternalLink(e.target.value)} placeholder="https://" />
       </Field>
 
-      <Field label="Photo URL" hint="Optional — paste an image link (right-click an image → Copy image address). Wikimedia Commons works well. Leave blank for a placeholder.">
-        <Input type="url" value={photoUrl} onChange={(e) => setPhotoUrl(e.target.value)} placeholder="https://…/photo.jpg" />
+      <Field label="Photo" hint="Optional — paste an image URL or upload one from your camera roll / files. Leave blank for a placeholder.">
+        <PhotoPicker value={photoUrl} onChange={setPhotoUrl} />
       </Field>
 
       <Field label="Where is it? (for the map)" hint="Optional — a place name or address so the map centers correctly, e.g. 'Exit Glacier, Seward, AK'. If blank, we'll guess from the title and location.">
